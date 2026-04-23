@@ -11,7 +11,7 @@ struct HeightView: View {
     // MARK: Config
     let minHeight: CGFloat = 50
     let maxHeight: CGFloat = 200
-    let rulerHeight: CGFloat = 500
+    let rulerHeight: CGFloat = 450
     
     @State private var heightCm: CGFloat = 150
     
@@ -25,7 +25,7 @@ struct HeightView: View {
     // MARK: Lottie Scale (50cm -> 0.25 | 250cm -> 1.35)
     private var personScale: CGFloat {
         let progress = (heightCm - minHeight) / (maxHeight - minHeight)
-        return 0.25 + progress * (1.35 - 0.25)
+        return 0.25 + progress * (1.23 - 0.25)
     }
     
     var body: some View {
@@ -40,7 +40,7 @@ struct HeightView: View {
             // =====================================================
             // LOTTIE CHARACTER
             // =====================================================
-            LottieView(animation: .named("female-passed.json"))
+            LottieView(animation: .named("male-passed.json"))
                 .playing(loopMode: .loop)
                 .resizable()
                 .scaledToFit()
