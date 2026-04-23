@@ -193,12 +193,12 @@ struct ContentView: View {
         let smokerBmi       = smokerEncoded * bmiClipped
 
         let features: [String: Any] = [
-            "age"           : age,           // Double ✅
-            "age_squared"   : ageSquared,    // Double ✅
-            "bmi"           : bmiClipped,    // Double ✅
-            "children"      : children,      // Double ✅
-            "smoker_encoded": smokerEncoded, // Double ✅
-            "smoker_bmi"    : smokerBmi,     // Double ✅
+            "age"           : age,
+            "age_squared"   : ageSquared,
+            "bmi"           : bmiClipped,
+            "children"      : children,
+            "smoker_encoded": smokerEncoded,
+            "smoker_bmi"    : smokerBmi,
         ]
 
         _ = gender  // tidak dipakai model
