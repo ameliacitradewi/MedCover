@@ -40,7 +40,7 @@ struct HeightView: View {
             // =====================================================
             // LOTTIE CHARACTER
             // =====================================================
-            LottieView(animation: .named("male-passed.json"))
+            LottieView(animation: .named("female-passed.json"))
                 .playing(loopMode: .loop)
                 .resizable()
                 .scaledToFit()
