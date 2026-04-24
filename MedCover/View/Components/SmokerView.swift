@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-enum SmokerStatus: Int, CaseIterable, Identifiable {
-    case no = 0
-    case yes = 1
-
-    var id: Int { rawValue }
-
-    var title: String {
-        switch self {
-        case .yes: return "Yes"
-        case .no: return "No"
-        }
-    }
-}
-
 struct SmokerView: View {
     @Binding var selectedStatus: SmokerStatus
 

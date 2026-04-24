@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-enum Gender: String, CaseIterable, Identifiable {
-    case female
-    case male
-
-    var id: String { rawValue }
-
-    var title: String {
-        switch self {
-        case .female: return "Female"
-        case .male: return "Male"
-        }
-    }
-}
-
 struct GenderToggleButton: View {
     @Binding var selectedGender: Gender
 
