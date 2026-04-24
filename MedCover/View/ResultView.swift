@@ -27,9 +27,15 @@ struct ResultView: View {
             VStack(spacing: 8) {
                 Text("Estimated Annual Premium")
                     .font(.headline)
-                Text(viewModel.predictionText)
-                    .font(.title2.bold())
-                    .foregroundStyle(.green)
+                if viewModel.isLoading {
+                    ProgressView()
+                        .progressViewStyle(.circular)
+                        .scaleEffect(1.3)
+                } else {
+                    Text(viewModel.predictionText)
+                        .font(.title2.bold())
+                        .foregroundStyle(.green)
+                }
                 
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
@@ -43,8 +49,11 @@ struct ResultView: View {
         }
         .padding()
         .navigationTitle("Summary")
-        .task {
-            viewModel.runPrediction()
+        .onAppear {
+            viewModel.runPrediction()   // ← Tidak perlu await
+        }
+        .onDisappear {
+            viewModel.cancelPrediction()
         }
     }
 }

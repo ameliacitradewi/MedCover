@@ -25,9 +25,12 @@ struct AgeView: View {
                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                         .fill(Color.white.opacity(0.85))
                 )
-                .onChange(of: ageText) { _, newValue in
+                .onChange(of: ageText) {_, newValue in
                     let filtered = newValue.filter(\.isNumber)
-                    ageText = String(filtered.prefix(2))
+                    let trimmed = String(filtered.prefix(2))
+                    if trimmed != newValue {
+                        ageText = trimmed
+                    }
                 }
         }
     }

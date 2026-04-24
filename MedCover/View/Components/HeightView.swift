@@ -191,7 +191,7 @@ struct HeightView: View {
             let initial = CGFloat(selectedHeightCm)
             heightCm = min(max(initial, minHeight), maxHeight)
         }
-        .onChange(of: heightCm) { _, newValue in
+        .onChange(of: heightCm) {_, newValue in
             selectedHeightCm = Int(newValue.rounded())
         }
     }

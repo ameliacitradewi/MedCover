@@ -24,6 +24,9 @@ struct ChildrenView: View {
             HStack(spacing: 14) {
                 Button {
                     hasChildren = true
+                    if selectedChildrenCount == 0 {
+                        selectedChildrenCount = 1
+                    }
                 } label: {
                     Text("Yes")
                         .font(.title3.bold())

@@ -12,10 +12,35 @@ struct Background: View {
   @State private var isActive = false
   
   var body: some View {
+    Group {
+      if #available(iOS 18.0, *) {
+        MeshGradientBackground(isActive: isActive)
+      } else {
+        LinearGradient(
+          colors: [.softLavender, .paleSkyBlue, .mintGreen],
+          startPoint: .topLeading,
+          endPoint: .bottomTrailing
+        )
+      }
+    }
+    .ignoresSafeArea()
+    .onAppear {
+      withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+        isActive = true
+      }
+    }
+  }
+}
+
+@available(iOS 18.0, *)
+private struct MeshGradientBackground: View {
+  let isActive: Bool
+
+  var body: some View {
     TimelineView(.animation) { context in
       let s = context.date.timeIntervalSince1970
       let v = Float(sin(s)) / 4
-      
+
       MeshGradient(
         width: 3,
         height: 3,
@@ -25,17 +50,11 @@ struct Background: View {
           [0.0, 1.0], [0.7 - v, 1.0], [1.0, 1.0],
         ],
         colors: [
-          .softLavender, .paleSkyBlue,   isActive ? .blushPink : .mintGreen,
-          .dustyRose,                             .peachCream,    .babyBlue,
-          isActive ? .peachCream : .lilacMist,    .seafoamPastel, .blushPink
+          .softLavender, .paleSkyBlue, isActive ? .blushPink : .mintGreen,
+          .dustyRose, .peachCream, .babyBlue,
+          isActive ? .peachCream : .lilacMist, .seafoamPastel, .blushPink
         ]
       )
-    }
-    .ignoresSafeArea()
-    .onAppear {
-      withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
-        isActive = true
-      }
     }
   }
 }

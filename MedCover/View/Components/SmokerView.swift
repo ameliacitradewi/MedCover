@@ -26,36 +26,14 @@ struct SmokerView: View {
     private func smokerButton(for status: SmokerStatus) -> some View {
         let isSelected = selectedStatus == status
 
-        Button {
+        ToggleOptionButton(
+            title: status.title,
+            isSelected: isSelected
+        ) {
             withAnimation(.spring(response: 0.25, dampingFraction: 0.85)) {
                 selectedStatus = status
             }
-        } label: {
-            Text(status.title)
-                .font(.title3.bold())
-                .foregroundColor(.white)
-                .frame(
-                    width: isSelected ? 150 : 120,
-                    height: isSelected ? 55 : 35
-                )
-                .background(
-                    RoundedRectangle(cornerRadius: 46, style: .continuous)
-                        .fill(
-                            isSelected
-                            ? LinearGradient(
-                                colors: [Color(hex: "BBDCF8"), Color(hex: "4C7AF4")],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                            : LinearGradient(
-                                colors: [Color.black, Color.black],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                )
         }
-        .buttonStyle(.plain)
     }
 }
 
