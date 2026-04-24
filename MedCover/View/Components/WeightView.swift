@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - Main View
 struct WeightPickerView: View {
+    @Binding var selectedWeight: Int
     @State private var rawAngle: Double = 0
     @State private var lastRawAngle: Double = 0
 
@@ -15,50 +16,51 @@ struct WeightPickerView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color(.clear).ignoresSafeArea()
+        ZStack {
+            Color(.clear).ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    Text("What is your weight?")
+            VStack(spacing: 0) {
+                Text("What is your weight?")
+                    .font(.largeTitle.bold())
+                    .padding(.bottom, 30)
+                
+                HStack(alignment: .lastTextBaseline, spacing: 4) {
+                    Text("\(currentWeight)")
                         .font(.largeTitle.bold())
-                        .padding(.bottom, 30)
-                    
-                    HStack(alignment: .lastTextBaseline, spacing: 4) {
-                        Text("\(currentWeight)")
-                            .font(.largeTitle.bold())
-                            .foregroundColor(Color(hex: "1A202C"))
-                            .contentTransition(.numericText())
-                            .animation(.spring(response: 0.2, dampingFraction: 0.8), value: currentWeight)
+                        .foregroundColor(Color(hex: "1A202C"))
+                        .contentTransition(.numericText())
+                        .animation(.spring(response: 0.2, dampingFraction: 0.8), value: currentWeight)
 
-                        Text("kg")
-                            .font(.system(size: 30, weight: .semibold, design: .rounded))
-                            .foregroundColor(Color(hex: "C0C8D8"))
-                            .padding(.bottom, 10)
-                    }
-
-                    Image(systemName: "arrowtriangle.down.fill")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(hex: "4CAF50"))
-
-                    ZStack(alignment: .bottom) {
-                        InfiniteDialView(
-                            rawAngle: $rawAngle,
-                            lastRawAngle: $lastRawAngle,
-                            degreesPerKg: degreesPerKg,
-                            minKg: minKg,
-                            maxKg: maxKg
-                        )
-                        .frame(height: 200)
-                    }
-                    
-                    NormalButton(title: "Next") {
-                        //
-                    }
-                    .padding(.top, 30)
+                    Text("kg")
+                        .font(.system(size: 30, weight: .semibold, design: .rounded))
+                        .foregroundColor(Color(hex: "C0C8D8"))
+                        .padding(.bottom, 10)
                 }
-                .padding()
+
+                Image(systemName: "arrowtriangle.down.fill")
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(hex: "4CAF50"))
+
+                ZStack(alignment: .bottom) {
+                    InfiniteDialView(
+                        rawAngle: $rawAngle,
+                        lastRawAngle: $lastRawAngle,
+                        degreesPerKg: degreesPerKg,
+                        minKg: minKg,
+                        maxKg: maxKg
+                    )
+                    .frame(height: 200)
+                }
             }
+            .padding()
+        }
+        .onAppear {
+            let initial = selectedWeight.clamped(to: minKg...maxKg)
+            rawAngle = Double(initial) * degreesPerKg
+            lastRawAngle = rawAngle
+        }
+        .onChange(of: currentWeight) { _, newValue in
+            selectedWeight = newValue
         }
     }
 }
@@ -308,5 +310,13 @@ extension Comparable {
 }
 
 #Preview {
-    WeightPickerView()
+    WeightPickerPreview()
+}
+
+private struct WeightPickerPreview: View {
+    @State private var selectedWeight: Int = 60
+
+    var body: some View {
+        WeightPickerView(selectedWeight: $selectedWeight)
+    }
 }

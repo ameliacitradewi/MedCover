@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AgeView: View {
-    @State private var ageText: String = ""
+    @Binding var ageText: String
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -34,6 +34,14 @@ struct AgeView: View {
 }
 
 #Preview {
-    AgeView()
+    AgePreview()
+}
+
+private struct AgePreview: View {
+    @State private var ageText: String = ""
+
+    var body: some View {
+        AgeView(ageText: $ageText)
         .padding()
+    }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ChildrenView: View {
-    @State private var selectedChildrenCount: Int = 0
+    @Binding var selectedChildrenCount: Int
     @State private var hasChildren: Bool? = nil
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 14), count: 5)
@@ -72,9 +72,20 @@ struct ChildrenView: View {
             }
         }
         .padding()
+        .onAppear {
+            hasChildren = selectedChildrenCount > 0
+        }
     }
 }
 
 #Preview {
-    ChildrenView()
+    ChildrenPreview()
+}
+
+private struct ChildrenPreview: View {
+    @State private var selectedChildrenCount: Int = 0
+
+    var body: some View {
+        ChildrenView(selectedChildrenCount: $selectedChildrenCount)
+    }
 }
