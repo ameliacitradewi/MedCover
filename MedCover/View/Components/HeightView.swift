@@ -7,6 +7,7 @@ import SwiftUI
 import Lottie
 
 struct HeightView: View {
+    @Binding var selectedHeightCm: Int
     
     // MARK: Config
     let minHeight: CGFloat = 50
@@ -185,8 +186,13 @@ struct HeightView: View {
                 value: heightCm
             )
             
-            NormalButton(title: "Next") {}
-                .padding(.top, 16)
+        }
+        .onAppear {
+            let initial = CGFloat(selectedHeightCm)
+            heightCm = min(max(initial, minHeight), maxHeight)
+        }
+        .onChange(of: heightCm) { _, newValue in
+            selectedHeightCm = Int(newValue.rounded())
         }
     }
     
@@ -205,6 +211,14 @@ struct HeightView: View {
 }
 
 #Preview {
-    HeightView()
-        .padding()
+    HeightPreview()
+}
+
+private struct HeightPreview: View {
+    @State private var selectedHeightCm: Int = 160
+
+    var body: some View {
+        HeightView(selectedHeightCm: $selectedHeightCm)
+            .padding()
+    }
 }

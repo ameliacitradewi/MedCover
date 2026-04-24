@@ -2,6 +2,7 @@ import SwiftUI
 
 struct StartView: View {
     @State private var ageText: String = ""
+    @State private var heightCm: Int = 160
     @State private var weight: Int = 60
     @State private var smokerStatus: SmokerStatus = .no
     @State private var childrenCount: Int = 0
@@ -19,6 +20,7 @@ struct StartView: View {
                 NavigationLink {
                     AgeStepView(
                         ageText: $ageText,
+                        heightCm: $heightCm,
                         weight: $weight,
                         smokerStatus: $smokerStatus,
                         childrenCount: $childrenCount
@@ -44,6 +46,7 @@ struct StartView: View {
 
 private struct AgeStepView: View {
     @Binding var ageText: String
+    @Binding var heightCm: Int
     @Binding var weight: Int
     @Binding var smokerStatus: SmokerStatus
     @Binding var childrenCount: Int
@@ -55,8 +58,9 @@ private struct AgeStepView: View {
             AgeView(ageText: $ageText)
 
             NavigationLink {
-                WeightStepView(
+                HeightStepView(
                     ageText: $ageText,
+                    heightCm: $heightCm,
                     weight: $weight,
                     smokerStatus: $smokerStatus,
                     childrenCount: $childrenCount
@@ -80,8 +84,46 @@ private struct AgeStepView: View {
     }
 }
 
+private struct HeightStepView: View {
+    @Binding var ageText: String
+    @Binding var heightCm: Int
+    @Binding var weight: Int
+    @Binding var smokerStatus: SmokerStatus
+    @Binding var childrenCount: Int
+
+    var body: some View {
+        VStack(spacing: 24) {
+            HeightView(selectedHeightCm: $heightCm)
+
+            NavigationLink {
+                WeightStepView(
+                    ageText: $ageText,
+                    heightCm: $heightCm,
+                    weight: $weight,
+                    smokerStatus: $smokerStatus,
+                    childrenCount: $childrenCount
+                )
+            } label: {
+                Text("Next")
+                    .font(.title3.bold())
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .fill(.blue)
+                    )
+            }
+            .buttonStyle(.plain)
+        }
+        .padding()
+        .navigationTitle("Height")
+    }
+}
+
 private struct WeightStepView: View {
     @Binding var ageText: String
+    @Binding var heightCm: Int
     @Binding var weight: Int
     @Binding var smokerStatus: SmokerStatus
     @Binding var childrenCount: Int
@@ -93,6 +135,7 @@ private struct WeightStepView: View {
             NavigationLink {
                 SmokerStepView(
                     ageText: $ageText,
+                    heightCm: $heightCm,
                     weight: $weight,
                     smokerStatus: $smokerStatus,
                     childrenCount: $childrenCount
@@ -117,6 +160,7 @@ private struct WeightStepView: View {
 
 private struct SmokerStepView: View {
     @Binding var ageText: String
+    @Binding var heightCm: Int
     @Binding var weight: Int
     @Binding var smokerStatus: SmokerStatus
     @Binding var childrenCount: Int
@@ -128,6 +172,7 @@ private struct SmokerStepView: View {
             NavigationLink {
                 ChildrenStepView(
                     ageText: $ageText,
+                    heightCm: $heightCm,
                     weight: $weight,
                     smokerStatus: $smokerStatus,
                     childrenCount: $childrenCount
@@ -152,6 +197,7 @@ private struct SmokerStepView: View {
 
 private struct ChildrenStepView: View {
     @Binding var ageText: String
+    @Binding var heightCm: Int
     @Binding var weight: Int
     @Binding var smokerStatus: SmokerStatus
     @Binding var childrenCount: Int
@@ -163,6 +209,7 @@ private struct ChildrenStepView: View {
             NavigationLink {
                 ResultView(
                     ageText: ageText,
+                    heightCm: heightCm,
                     weight: weight,
                     smokerStatus: smokerStatus,
                     childrenCount: childrenCount
