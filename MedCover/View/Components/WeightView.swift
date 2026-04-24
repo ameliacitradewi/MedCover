@@ -17,13 +17,16 @@ struct WeightPickerView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(hex: "F2F5FF").ignoresSafeArea()
+                Color(.clear).ignoresSafeArea()
 
                 VStack(spacing: 0) {
-
+                    Text("What is your weight?")
+                        .font(.largeTitle.bold())
+                        .padding(.bottom, 30)
+                    
                     HStack(alignment: .lastTextBaseline, spacing: 4) {
                         Text("\(currentWeight)")
-                            .font(.system(size: 80, weight: .bold, design: .rounded))
+                            .font(.largeTitle.bold())
                             .foregroundColor(Color(hex: "1A202C"))
                             .contentTransition(.numericText())
                             .animation(.spring(response: 0.2, dampingFraction: 0.8), value: currentWeight)
@@ -38,8 +41,6 @@ struct WeightPickerView: View {
                         .font(.system(size: 16))
                         .foregroundColor(Color(hex: "4CAF50"))
 
-                    Spacer().frame(height: 4)
-
                     ZStack(alignment: .bottom) {
                         InfiniteDialView(
                             rawAngle: $rawAngle,
@@ -49,26 +50,14 @@ struct WeightPickerView: View {
                             maxKg: maxKg
                         )
                         .frame(height: 200)
-
-                        NavigationLink(destination: NextPageView(weight: currentWeight)) {
-                            ZStack {
-                                Circle()
-                                    .fill(
-                                        LinearGradient(
-                                            colors: [Color(hex: "7BBFFF"), Color(hex: "4389F5")],
-                                            startPoint: .topLeading,
-                                            endPoint: .bottomTrailing
-                                        )
-                                    )
-                                    .frame(width: 68, height: 68)
-                                    .shadow(color: Color(hex: "4389F5").opacity(0.4), radius: 12, x: 0, y: 5)
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 22, weight: .bold))
-                                    .foregroundColor(.white)
-                            }
-                        }
                     }
+                    
+                    NormalButton(title: "Next") {
+                        //
+                    }
+                    .padding(.top, 30)
                 }
+                .padding()
             }
         }
     }
