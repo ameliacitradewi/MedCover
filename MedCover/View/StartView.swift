@@ -1,177 +1,155 @@
 import SwiftUI
 
+// MARK: - Step Enum
+
+enum FormStep: Hashable {
+    case age, height, weight, smoker, children, result
+}
+
+// MARK: - StartView
+
 @MainActor
 struct StartView: View {
     @StateObject private var viewModel = InsuranceFormViewModel()
+    @State private var path: [FormStep] = []
 
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 24) {
-                Text("Welcome to MedCover")
-                    .font(.largeTitle.bold())
-                    .multilineTextAlignment(.center)
-
-                Text("Mulai isi data untuk estimasi premi Anda.")
-                    .foregroundStyle(.secondary)
-
-                NavigationLink {
-                    AgeStepView(viewModel: viewModel)
-                } label: {
-                    Text("Start")
-                        .font(.title3.bold())
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(.blue)
-                        )
-                }
-                .buttonStyle(.plain)
+        NavigationStack(path: $path) {
+            WelcomeView {
+                path.append(.age)
             }
-            .padding(24)
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: FormStep.self) { step in
+                FormStepView(step: step, viewModel: viewModel, path: $path)
+            }
         }
     }
 }
 
-private struct AgeStepView: View {
-    @ObservedObject var viewModel: InsuranceFormViewModel
+// MARK: - Welcome View
 
-    private var canContinue: Bool { !viewModel.ageText.isEmpty }
+private struct WelcomeView: View {
+    let onStart: () -> Void
 
     var body: some View {
         VStack(spacing: 24) {
+            Text("Welcome to MedCover")
+                .font(.largeTitle.bold())
+                .multilineTextAlignment(.center)
+
+            Text("Mulai isi data untuk estimasi premi Anda.")
+                .foregroundStyle(.secondary)
+
+            PrimaryButton(title: "Start", action: onStart)
+        }
+        .padding(24)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+// MARK: - FormStepView (Single view untuk semua step)
+
+private struct FormStepView: View {
+    let step: FormStep
+    @ObservedObject var viewModel: InsuranceFormViewModel
+    @Binding var path: [FormStep]
+
+    private var canContinue: Bool {
+        switch step {
+        case .age: return !viewModel.ageText.isEmpty
+        default:   return true
+        }
+    }
+
+    var body: some View {
+        VStack(spacing: 24) {
+            stepContent
+
+            PrimaryButton(
+                title: step == .children ? "See Result" : "Next",
+                disabled: !canContinue
+            ) {
+                navigate()
+            }
+        }
+        .padding()
+        .navigationTitle(step.title)
+    }
+
+    @ViewBuilder
+    private var stepContent: some View {
+        switch step {
+        case .age:
             AgeView(ageText: $viewModel.ageText)
-
-            NavigationLink {
-                HeightStepView(viewModel: viewModel)
-            } label: {
-                Text("Next")
-                    .font(.title3.bold())
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(canContinue ? .blue : .gray)
-                    )
-            }
-            .disabled(!canContinue)
-            .buttonStyle(.plain)
-        }
-        .padding()
-        .navigationTitle("Age")
-    }
-}
-
-private struct HeightStepView: View {
-    @ObservedObject var viewModel: InsuranceFormViewModel
-
-    var body: some View {
-        VStack(spacing: 24) {
+        case .height:
             HeightView(selectedHeightCm: $viewModel.heightCm)
-
-            NavigationLink {
-                WeightStepView(viewModel: viewModel)
-            } label: {
-                Text("Next")
-                    .font(.title3.bold())
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(.blue)
-                    )
-            }
-            .buttonStyle(.plain)
-        }
-        .padding()
-        .navigationTitle("Height")
-    }
-}
-
-private struct WeightStepView: View {
-    @ObservedObject var viewModel: InsuranceFormViewModel
-
-    var body: some View {
-        VStack(spacing: 24) {
+        case .weight:
             WeightPickerView(selectedWeight: $viewModel.weight)
-
-            NavigationLink {
-                SmokerStepView(viewModel: viewModel)
-            } label: {
-                Text("Next")
-                    .font(.title3.bold())
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(.blue)
-                    )
-            }
-            .buttonStyle(.plain)
-        }
-        .padding()
-        .navigationTitle("Weight")
-    }
-}
-
-private struct SmokerStepView: View {
-    @ObservedObject var viewModel: InsuranceFormViewModel
-
-    var body: some View {
-        VStack(spacing: 24) {
+        case .smoker:
             SmokerView(selectedStatus: $viewModel.smokerStatus)
-
-            NavigationLink {
-                ChildrenStepView(viewModel: viewModel)
-            } label: {
-                Text("Next")
-                    .font(.title3.bold())
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(.blue)
-                    )
-            }
-            .buttonStyle(.plain)
+        case .children:
+            ChildrenView(selectedChildrenCount: $viewModel.childrenCount)
+        case .result:
+            ResultView(viewModel: viewModel)
         }
-        .padding()
-        .navigationTitle("Smoker")
+    }
+
+    private func navigate() {
+        guard let next = step.next else { return }
+        path.append(next)
     }
 }
 
-private struct ChildrenStepView: View {
-    @ObservedObject var viewModel: InsuranceFormViewModel
+// MARK: - FormStep Helpers
+
+extension FormStep {
+    var title: String {
+        switch self {
+        case .age:      return "Age"
+        case .height:   return "Height"
+        case .weight:   return "Weight"
+        case .smoker:   return "Smoker"
+        case .children: return "Children"
+        case .result:   return "Result"
+        }
+    }
+
+    var next: FormStep? {
+        switch self {
+        case .age:      return .height
+        case .height:   return .weight
+        case .weight:   return .smoker
+        case .smoker:   return .children
+        case .children: return .result
+        case .result:   return nil
+        }
+    }
+}
+
+// MARK: - Reusable Button
+
+private struct PrimaryButton: View {
+    let title: String
+    var disabled: Bool = false
+    let action: () -> Void
 
     var body: some View {
-        VStack(spacing: 24) {
-            ChildrenView(selectedChildrenCount: $viewModel.childrenCount)
-
-            NavigationLink {
-                ResultView(viewModel: viewModel)
-            } label: {
-                Text("See Result")
-                    .font(.title3.bold())
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(.blue)
-                    )
-            }
-            .buttonStyle(.plain)
+        Button(action: action) {
+            Text(title)
+                .font(.title3.bold())
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(disabled ? Color.gray : Color.blue)
+                )
         }
-        .padding()
-        .navigationTitle("Children")
+        .disabled(disabled)
+        .buttonStyle(.plain)
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     MainActor.assumeIsolated {
