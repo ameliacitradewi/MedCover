@@ -32,4 +32,8 @@ enum SmokerStatus: Int, CaseIterable, Identifiable {
         case .no: return "No"
         }
     }
+
+    var encodedValue: Double {
+        Double(rawValue)
+    }
 }

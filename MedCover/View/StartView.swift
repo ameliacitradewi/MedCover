@@ -1,11 +1,8 @@
 import SwiftUI
 
+@MainActor
 struct StartView: View {
-    @State private var ageText: String = ""
-    @State private var heightCm: Int = 160
-    @State private var weight: Int = 60
-    @State private var smokerStatus: SmokerStatus = .no
-    @State private var childrenCount: Int = 0
+    @StateObject private var viewModel = InsuranceFormViewModel()
 
     var body: some View {
         NavigationStack {
@@ -18,13 +15,7 @@ struct StartView: View {
                     .foregroundStyle(.secondary)
 
                 NavigationLink {
-                    AgeStepView(
-                        ageText: $ageText,
-                        heightCm: $heightCm,
-                        weight: $weight,
-                        smokerStatus: $smokerStatus,
-                        childrenCount: $childrenCount
-                    )
+                    AgeStepView(viewModel: viewModel)
                 } label: {
                     Text("Start")
                         .font(.title3.bold())
@@ -45,26 +36,16 @@ struct StartView: View {
 }
 
 private struct AgeStepView: View {
-    @Binding var ageText: String
-    @Binding var heightCm: Int
-    @Binding var weight: Int
-    @Binding var smokerStatus: SmokerStatus
-    @Binding var childrenCount: Int
+    @ObservedObject var viewModel: InsuranceFormViewModel
 
-    private var canContinue: Bool { !ageText.isEmpty }
+    private var canContinue: Bool { !viewModel.ageText.isEmpty }
 
     var body: some View {
         VStack(spacing: 24) {
-            AgeView(ageText: $ageText)
+            AgeView(ageText: $viewModel.ageText)
 
             NavigationLink {
-                HeightStepView(
-                    ageText: $ageText,
-                    heightCm: $heightCm,
-                    weight: $weight,
-                    smokerStatus: $smokerStatus,
-                    childrenCount: $childrenCount
-                )
+                HeightStepView(viewModel: viewModel)
             } label: {
                 Text("Next")
                     .font(.title3.bold())
@@ -85,24 +66,14 @@ private struct AgeStepView: View {
 }
 
 private struct HeightStepView: View {
-    @Binding var ageText: String
-    @Binding var heightCm: Int
-    @Binding var weight: Int
-    @Binding var smokerStatus: SmokerStatus
-    @Binding var childrenCount: Int
+    @ObservedObject var viewModel: InsuranceFormViewModel
 
     var body: some View {
         VStack(spacing: 24) {
-            HeightView(selectedHeightCm: $heightCm)
+            HeightView(selectedHeightCm: $viewModel.heightCm)
 
             NavigationLink {
-                WeightStepView(
-                    ageText: $ageText,
-                    heightCm: $heightCm,
-                    weight: $weight,
-                    smokerStatus: $smokerStatus,
-                    childrenCount: $childrenCount
-                )
+                WeightStepView(viewModel: viewModel)
             } label: {
                 Text("Next")
                     .font(.title3.bold())
@@ -122,24 +93,14 @@ private struct HeightStepView: View {
 }
 
 private struct WeightStepView: View {
-    @Binding var ageText: String
-    @Binding var heightCm: Int
-    @Binding var weight: Int
-    @Binding var smokerStatus: SmokerStatus
-    @Binding var childrenCount: Int
+    @ObservedObject var viewModel: InsuranceFormViewModel
 
     var body: some View {
         VStack(spacing: 24) {
-            WeightPickerView(selectedWeight: $weight)
+            WeightPickerView(selectedWeight: $viewModel.weight)
 
             NavigationLink {
-                SmokerStepView(
-                    ageText: $ageText,
-                    heightCm: $heightCm,
-                    weight: $weight,
-                    smokerStatus: $smokerStatus,
-                    childrenCount: $childrenCount
-                )
+                SmokerStepView(viewModel: viewModel)
             } label: {
                 Text("Next")
                     .font(.title3.bold())
@@ -159,24 +120,14 @@ private struct WeightStepView: View {
 }
 
 private struct SmokerStepView: View {
-    @Binding var ageText: String
-    @Binding var heightCm: Int
-    @Binding var weight: Int
-    @Binding var smokerStatus: SmokerStatus
-    @Binding var childrenCount: Int
+    @ObservedObject var viewModel: InsuranceFormViewModel
 
     var body: some View {
         VStack(spacing: 24) {
-            SmokerView(selectedStatus: $smokerStatus)
+            SmokerView(selectedStatus: $viewModel.smokerStatus)
 
             NavigationLink {
-                ChildrenStepView(
-                    ageText: $ageText,
-                    heightCm: $heightCm,
-                    weight: $weight,
-                    smokerStatus: $smokerStatus,
-                    childrenCount: $childrenCount
-                )
+                ChildrenStepView(viewModel: viewModel)
             } label: {
                 Text("Next")
                     .font(.title3.bold())
@@ -196,24 +147,14 @@ private struct SmokerStepView: View {
 }
 
 private struct ChildrenStepView: View {
-    @Binding var ageText: String
-    @Binding var heightCm: Int
-    @Binding var weight: Int
-    @Binding var smokerStatus: SmokerStatus
-    @Binding var childrenCount: Int
+    @ObservedObject var viewModel: InsuranceFormViewModel
 
     var body: some View {
         VStack(spacing: 24) {
-            ChildrenView(selectedChildrenCount: $childrenCount)
+            ChildrenView(selectedChildrenCount: $viewModel.childrenCount)
 
             NavigationLink {
-                ResultView(
-                    ageText: ageText,
-                    heightCm: heightCm,
-                    weight: weight,
-                    smokerStatus: smokerStatus,
-                    childrenCount: childrenCount
-                )
+                ResultView(viewModel: viewModel)
             } label: {
                 Text("See Result")
                     .font(.title3.bold())
@@ -233,5 +174,7 @@ private struct ChildrenStepView: View {
 }
 
 #Preview {
-    StartView()
+    MainActor.assumeIsolated {
+        StartView()
+    }
 }
