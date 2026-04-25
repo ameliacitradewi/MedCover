@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TestWeight: View {
-    private var weightText = ""
+    @State private var selectedWeight: Int = 60
     
     var body: some View {
         GeometryReader { geo in
@@ -21,19 +21,17 @@ struct TestWeight: View {
                         .scaledToFit()
                         .frame(height: geo.size.height * 0.55)
                     
-                    VStack (spacing: 20) {
+                    VStack (spacing: 0) {
                         Text("Your Current Weight?")
                             .font(.title.bold())
-                            .multilineTextAlignment(.center)
-                            .padding(.bottom)
+                            .padding(.top)
                         
-                        Text(weightText)
+                        WeightPickerView(selectedWeight: $selectedWeight)
                         
                         NextButton(title: "Next", destination: TestSmoker())
-                            .padding(.top)
                     }
                     .padding()
-                    .frame(maxHeight: .infinity)
+                    .frame(maxHeight: geo.size.height)
                     .background(
                         RoundedRectangle(cornerRadius: 50, style: .continuous)
                             .fill(Color.white.opacity(0.6))
@@ -41,6 +39,7 @@ struct TestWeight: View {
                     .ignoresSafeArea(edges: .bottom)
                 }
             }
+            .frame(maxHeight: geo.size.height)
         }
     }
 }

@@ -70,7 +70,7 @@ struct TestAge: View {
                                 NextButton(title: "Next", destination: TestHeight())
                                     .disabled(ageInput.isEmpty)
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(maxHeight: .infinity)
                         }
                         .background(
                             RoundedRectangle(cornerRadius: 50)
@@ -80,6 +80,7 @@ struct TestAge: View {
                     }
                 }
             }
+            .frame(maxHeight: geo.size.height)
         }
     }
 }

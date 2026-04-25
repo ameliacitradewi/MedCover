@@ -48,6 +48,7 @@ struct TestHeight: View {
                 }
                 
             }
+            .frame(maxHeight: geo.size.height)
         }
     }
 }

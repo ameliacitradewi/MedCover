@@ -9,8 +9,24 @@ import SwiftUI
 
 struct TestResult: View {
     var body: some View {
-        Text("final result")
-        
-        NextButton(title: "FINISH", destination: TestStart())
+        GeometryReader { geo in
+            ZStack {
+                MeshBg().ignoresSafeArea()
+                
+                VStack (spacing: 0) {
+                    
+                }
+                .background(
+                    RoundedRectangle(cornerRadius: 50, style: .continuous)
+                        .fill(Color.white.opacity(0.6))
+                )
+                .ignoresSafeArea(edges: .bottom)
+            }
+            .frame(maxHeight: geo.size.height)
+        }
     }
+}
+
+#Preview {
+    TestResult()
 }

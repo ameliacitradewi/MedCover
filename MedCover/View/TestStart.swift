@@ -42,6 +42,7 @@ struct TestStart: View {
                         .ignoresSafeArea(edges: .bottom)
                     }
                 }
+                .frame(maxHeight: geo.size.height)
             }
         } // end navigation stack
         .navigationBarBackButtonHidden(true)

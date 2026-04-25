@@ -30,11 +30,9 @@ struct WeightPickerView: View {
                     Text("kg")
                         .font(.system(size: 30, weight: .semibold, design: .rounded))
                         .foregroundColor(Color(hex: "C0C8D8"))
-                        .padding(.bottom, 10)
                 }
 
                 Image(systemName: "arrowtriangle.down.fill")
-                    .font(.system(size: 16))
                     .foregroundColor(Color(hex: "4CAF50"))
 
                 ZStack(alignment: .bottom) {
@@ -45,7 +43,7 @@ struct WeightPickerView: View {
                         minKg: minKg,
                         maxKg: maxKg
                     )
-                    .frame(height: 200)
+                    .frame(height: 190)
                 }
             }
             .padding()

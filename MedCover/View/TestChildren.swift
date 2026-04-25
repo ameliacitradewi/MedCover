@@ -85,14 +85,9 @@ struct TestChildren: View {
                             Text(bottomText)
                                 .font(.caption.italic())
                             
-                            NextButton(
-                                title: "Next",
-                                destination: TestResult(),
-                                disabled: isNextDisabled
-                            )
-                            
+                            NextButton(title: "Next", destination: TestResult(), disabled: isNextDisabled)
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(maxHeight: .infinity)
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 50, style: .continuous)
@@ -101,6 +96,7 @@ struct TestChildren: View {
                     .ignoresSafeArea(edges: .bottom)
                 }
             }
+            .frame(maxHeight: geo.size.height)
         }
     }
 }

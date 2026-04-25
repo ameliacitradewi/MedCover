@@ -42,10 +42,9 @@ struct TestSmoker: View {
                             Text("Honesty is healthier than nicotine.")
                                 .font(.caption.italic())
                             
-                            NextButton(title: "Next", destination: TestChildren())
-                                .disabled(smokerStatus == nil)
+                            NextButton(title: "Next", destination: TestChildren(), disabled: smokerStatus == nil)
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(maxHeight: .infinity)
                     }
                     .background(
                         RoundedRectangle(cornerRadius: 50, style: .continuous)
@@ -54,6 +53,7 @@ struct TestSmoker: View {
                     .ignoresSafeArea(edges: .bottom)
                 }
             }
+            .frame(maxHeight: geo.size.height)
         }
     }
 }
