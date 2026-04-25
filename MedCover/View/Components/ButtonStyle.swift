@@ -78,18 +78,71 @@ struct GenderToggleButton: View {
     }
 }
 
-#Preview {
-    ZStack {
-        Color(hex: "F2F5FF").ignoresSafeArea()
-        GenderTogglePreview()
-    }
-}
 
-private struct GenderTogglePreview: View {
-    @State private var selectedGender: Gender = .male
-
+struct NormalButton: View {
+    let title: String
+    var disabled: Bool = false
+    let action: () -> Void
+    
     var body: some View {
-        GenderToggleButton(selectedGender: $selectedGender)
-            .padding(.horizontal, 20)
+        Button(action: action) {
+            Text(title)
+                .font(.title3.bold())
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .background(
+                    RoundedRectangle(cornerRadius: 30, style: .continuous)
+                        .fill(disabled ? Color.gray : Color.blue)
+                )
+        }
+        .disabled(disabled)
+        .buttonStyle(.plain)
     }
 }
+
+struct NextButton<Destination: View>: View {
+    
+    let title: String
+    let destination: Destination
+    var disabled: Bool = false
+    var color: Color = .black
+    
+    var body: some View {
+        NavigationLink {
+            destination
+        } label: {
+            Text(title)
+                .font(.headline)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, minHeight: 56)
+                .background(
+                    RoundedRectangle(cornerRadius: 30)
+                        .fill(disabled ? Color.gray : color)
+                )
+        }
+        .disabled(disabled)
+        .buttonStyle(.plain)
+        .padding(.horizontal, 24)
+    }
+}
+
+//#Preview {
+//    NextButton(title: "Test", destination: TestAge())
+//}
+
+//#Preview {
+//    ZStack {
+//        Color(hex: "F2F5FF").ignoresSafeArea()
+//        GenderTogglePreview()
+//    }
+//}
+//
+//private struct GenderTogglePreview: View {
+//    @State private var selectedGender: Gender = .male
+//
+//    var body: some View {
+//        GenderToggleButton(selectedGender: $selectedGender)
+//            .padding(.horizontal, 20)
+//    }
+//}

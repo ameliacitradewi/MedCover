@@ -39,8 +39,21 @@ struct HeightView: View {
         
         
         VStack(spacing: 30) {
-            
-            GenderToggleButton(selectedGender: $selectedGender)
+            HStack(spacing: 14) {
+                ToggleOptionButton(
+                    title: Gender.female.title,
+                    isSelected: selectedGender == .female
+                ) {
+                    selectedGender = .female
+                }
+
+                ToggleOptionButton(
+                    title: Gender.male.title,
+                    isSelected: selectedGender == .male
+                ) {
+                    selectedGender = .male
+                }
+            }
                 .padding(.bottom, 10)
             
             ZStack(alignment: .bottomTrailing) {

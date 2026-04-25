@@ -20,10 +20,6 @@ struct WeightPickerView: View {
             Color(.clear).ignoresSafeArea()
 
             VStack(spacing: 0) {
-                Text("What is your weight?")
-                    .font(.largeTitle.bold())
-                    .padding(.bottom, 30)
-                
                 HStack(alignment: .lastTextBaseline, spacing: 4) {
                     Text("\(currentWeight)")
                         .font(.largeTitle.bold())

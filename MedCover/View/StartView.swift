@@ -1,4 +1,5 @@
 import SwiftUI
+import Lottie
 
 // MARK: - Step Enum
 
@@ -12,11 +13,16 @@ enum FormStep: Hashable {
 struct StartView: View {
     @StateObject private var viewModel = InsuranceFormViewModel()
     @State private var path: [FormStep] = []
-
+    
     var body: some View {
         NavigationStack(path: $path) {
-            WelcomeView {
-                path.append(.age)
+            ZStack {
+                MeshBg()
+                    .ignoresSafeArea()
+
+                WelcomeView {
+                    path.append(.age)
+                }
             }
             .navigationDestination(for: FormStep.self) { step in
                 FormStepView(step: step, viewModel: viewModel, path: $path)
@@ -29,19 +35,46 @@ struct StartView: View {
 
 private struct WelcomeView: View {
     let onStart: () -> Void
-
+    
     var body: some View {
-        VStack(spacing: 24) {
-            Text("Welcome to MedCover")
-                .font(.largeTitle.bold())
-                .multilineTextAlignment(.center)
-
-            Text("Mulai isi data untuk estimasi premi Anda.")
-                .foregroundStyle(.secondary)
-
-            PrimaryButton(title: "Start", action: onStart)
+        VStack {
+            VStack {
+                LottieView(animation: .named("landingpage.json"))
+                    .playing(loopMode: .loop)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxHeight: 400)
+//                    .padding(.horizontal, 12)
+//                    .padding(.top, 12)
+            }
+            
+            Spacer(minLength: 0)
+            
+//            VStack(spacing: 0) {
+                VStack(spacing: 20) {
+                    Text("Estimate Your Insurance Premium")
+                        .font(.title.bold())
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom)
+                    
+                    Text("Answer a few quick questions to see your estimated insurance premium based on your health profile and lifestyle.\n\nFast, simple, and commitment-free.")
+                        .multilineTextAlignment(.center)
+                    
+                    NormalButton(title: "Start", action: onStart)
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 6)
+                .padding(.bottom, 36)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottom)
+                .background(
+                    RoundedRectangle(cornerRadius: 30, style: .continuous)
+                        .fill(Color.white.opacity(0.94))
+                )
+                .ignoresSafeArea(edges: .bottom)
+                .padding(.top, 50)
+//            }
         }
-        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .navigationBarTitleDisplayMode(.inline)
     }
 }
@@ -52,29 +85,34 @@ private struct FormStepView: View {
     let step: FormStep
     @ObservedObject var viewModel: InsuranceFormViewModel
     @Binding var path: [FormStep]
-
+    
     private var canContinue: Bool {
         switch step {
         case .age: return !viewModel.ageText.isEmpty
         default:   return true
         }
     }
-
+    
     var body: some View {
-        VStack(spacing: 24) {
-            stepContent
+        ZStack {
+            MeshBg()
+                .ignoresSafeArea()
 
-            PrimaryButton(
-                title: step == .children ? "See Result" : "Next",
-                disabled: !canContinue
-            ) {
-                navigate()
+            VStack(spacing: 24) {
+                stepContent
+                
+                NormalButton(
+                    title: step == .children ? "See Result" : "Next",
+                    disabled: !canContinue
+                ) {
+                    navigate()
+                }
             }
+            .padding()
         }
-        .padding()
         .navigationTitle(step.title)
     }
-
+    
     @ViewBuilder
     private var stepContent: some View {
         switch step {
@@ -92,7 +130,7 @@ private struct FormStepView: View {
             ResultView(viewModel: viewModel)
         }
     }
-
+    
     private func navigate() {
         guard let next = step.next else { return }
         path.append(next)
@@ -112,7 +150,7 @@ extension FormStep {
         case .result:   return "Result"
         }
     }
-
+    
     var next: FormStep? {
         switch self {
         case .age:      return .height
@@ -127,27 +165,7 @@ extension FormStep {
 
 // MARK: - Reusable Button
 
-private struct PrimaryButton: View {
-    let title: String
-    var disabled: Bool = false
-    let action: () -> Void
 
-    var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.title3.bold())
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(disabled ? Color.gray : Color.blue)
-                )
-        }
-        .disabled(disabled)
-        .buttonStyle(.plain)
-    }
-}
 
 // MARK: - Preview
 

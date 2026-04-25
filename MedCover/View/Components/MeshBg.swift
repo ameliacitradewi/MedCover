@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Background: View {
+struct MeshBg: View {
   
   @State private var isActive = false
   
@@ -25,7 +25,7 @@ struct Background: View {
     }
     .ignoresSafeArea()
     .onAppear {
-      withAnimation(.easeInOut(duration: 3).repeatForever(autoreverses: true)) {
+      withAnimation(.easeInOut(duration: 1).repeatForever(autoreverses: true)) {
         isActive = true
       }
     }
@@ -72,5 +72,5 @@ extension Color {
 }
 
 #Preview {
-  Background()
+  MeshBg()
 }
