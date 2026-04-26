@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TestHeight: View {
+    @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @State private var selectedHeightCm: Int = 160
     @State private var genderStatus: Gender = .female
     
@@ -45,11 +46,22 @@ struct TestHeight: View {
             }
             .frame(maxHeight: geo.size.height)
         }
+        .onAppear {
+            selectedHeightCm = formViewModel.heightCm
+            genderStatus = formViewModel.gender
+        }
+        .onChange(of: selectedHeightCm) { _, newValue in
+            formViewModel.heightCm = newValue
+        }
+        .onChange(of: genderStatus) { _, newValue in
+            formViewModel.gender = newValue
+        }
     }
 }
 
 #Preview("Default") {
     NavigationStack {
         TestHeight()
+            .environmentObject(TestInsuranceFormViewModel())
     }
 }

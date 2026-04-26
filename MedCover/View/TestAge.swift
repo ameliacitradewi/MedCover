@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TestAge: View {
+    @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @State private var ageInput: String = ""
     @FocusState private var isAgeFocused: Bool
     
@@ -49,6 +50,7 @@ struct TestAge: View {
                                         .lineLimit(1)
                                         .onChange(of: ageInput) { _, newValue in
                                             ageInput = String(newValue.filter { $0.isNumber }.prefix(2))
+                                            formViewModel.age = Int(ageInput) ?? 0
                                         }
                                 }
                                 .frame(
@@ -82,9 +84,13 @@ struct TestAge: View {
             }
             .frame(maxHeight: geo.size.height)
         }
+        .onAppear {
+            ageInput = formViewModel.age > 0 ? String(formViewModel.age) : ""
+        }
     }
 }
 
 #Preview {
     TestAge()
+        .environmentObject(TestInsuranceFormViewModel())
 }

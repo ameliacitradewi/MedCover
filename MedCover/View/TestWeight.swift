@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TestWeight: View {
+    @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @StateObject private var viewModel = TestWeightViewModel()
     
     var body: some View {
@@ -40,9 +41,16 @@ struct TestWeight: View {
             }
             .frame(maxHeight: geo.size.height)
         }
+        .onAppear {
+            viewModel.selectedWeight = formViewModel.weightKg
+        }
+        .onChange(of: viewModel.selectedWeight) { _, newValue in
+            formViewModel.weightKg = newValue
+        }
     }
 }
 
 #Preview {
     TestWeight()
+        .environmentObject(TestInsuranceFormViewModel())
 }

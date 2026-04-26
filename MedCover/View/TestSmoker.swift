@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TestSmoker: View {
+    @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @State private var smokerStatus: SmokerStatus? = nil
     
     var body: some View {
@@ -34,6 +35,7 @@ struct TestSmoker: View {
                                         isSelected: smokerStatus == status
                                     ) {
                                         smokerStatus = status
+                                        formViewModel.smokerStatus = status
                                     }
                                 }
                             }
@@ -55,9 +57,13 @@ struct TestSmoker: View {
             }
             .frame(maxHeight: geo.size.height)
         }
+        .onAppear {
+            smokerStatus = formViewModel.smokerStatus
+        }
     }
 }
 
 #Preview {
     TestSmoker()
+        .environmentObject(TestInsuranceFormViewModel())
 }

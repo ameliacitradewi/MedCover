@@ -9,6 +9,8 @@ import SwiftUI
 import Lottie
 
 struct TestStart: View {
+    @StateObject private var formViewModel = TestInsuranceFormViewModel()
+
     var body: some View {
         NavigationStack {
             GeometryReader { geo in
@@ -45,6 +47,7 @@ struct TestStart: View {
                 .frame(maxHeight: geo.size.height)
             }
         } // end navigation stack
+        .environmentObject(formViewModel)
         .navigationBarBackButtonHidden(true)
     }
 }

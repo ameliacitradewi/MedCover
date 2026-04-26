@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TestChildren: View {
+    @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @State private var hasChildren: Bool? = nil
     @State var selectedChildrenCount: Int = 0
     
@@ -69,6 +70,7 @@ struct TestChildren: View {
                                         ) {
                                             hasChildren = true
                                             selectedChildrenCount = 0
+                                            formViewModel.children = 0
                                         }
                                         
                                         ToggleOptionButton(
@@ -76,6 +78,7 @@ struct TestChildren: View {
                                         ) {
                                             hasChildren = false
                                             selectedChildrenCount = 0
+                                            formViewModel.children = 0
                                         }
                                     }
                                 }
@@ -98,17 +101,32 @@ struct TestChildren: View {
             }
             .frame(maxHeight: geo.size.height)
         }
+        .onAppear {
+            selectedChildrenCount = formViewModel.children
+            hasChildren = selectedChildrenCount > 0 ? true : nil
+        }
+        .onChange(of: selectedChildrenCount) { _, newValue in
+            formViewModel.children = newValue
+        }
+        .onChange(of: hasChildren) { _, newValue in
+            if newValue == false {
+                selectedChildrenCount = 0
+                formViewModel.children = 0
+            }
+        }
     }
 }
 
 #Preview("Default") {
     NavigationStack {
         TestChildren(selectedChildrenCount: 0)
+            .environmentObject(TestInsuranceFormViewModel())
     }
 }
 
 #Preview("Selected 3 Children") {
     NavigationStack {
         TestChildren(selectedChildrenCount: 3)
+            .environmentObject(TestInsuranceFormViewModel())
     }
 }
