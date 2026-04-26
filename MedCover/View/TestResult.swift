@@ -68,7 +68,7 @@ struct TestResult: View {
                             Text("DONE")
                                 .font(.headline)
                                 .foregroundColor(.white)
-                                .frame(maxWidth: .infinity, minHeight: 56)
+                                .frame(maxWidth: .infinity, minHeight: 45)
                                 .background(
                                     RoundedRectangle(cornerRadius: 30)
                                         .fill(Color.black)
@@ -77,12 +77,6 @@ struct TestResult: View {
                         .buttonStyle(.plain)
                         .padding(.horizontal, 24)
 
-                        NavigationLink(isActive: $navigateToStart) {
-                            TestStart()
-                        } label: {
-                            EmptyView()
-                        }
-                        .hidden()
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                     .padding(24)
@@ -97,6 +91,9 @@ struct TestResult: View {
         }
         .onAppear {
             viewModel.prepareAndPredict(from: formViewModel)
+        }
+        .navigationDestination(isPresented: $navigateToStart) {
+            TestStart()
         }
     }
 }
