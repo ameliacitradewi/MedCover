@@ -1,0 +1,47 @@
+{
+  "fill" : "automatic",
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "hidden" : true,
+          "image-name" : "icon.png",
+          "name" : "icon",
+          "position" : {
+            "scale" : 0.6,
+            "translation-in-points" : [
+              -11.099999999999909,
+              98.8125
+            ]
+          }
+        },
+        {
+          "hidden" : false,
+          "image-name" : "icon2.png",
+          "name" : "icon2",
+          "position" : {
+            "scale" : 0.8,
+            "translation-in-points" : [
+              -64.99687499999993,
+              24.399999999999864
+            ]
+          }
+        }
+      ],
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.5
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
