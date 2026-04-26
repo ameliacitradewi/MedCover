@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct TestAge: View {
     @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
@@ -19,10 +20,18 @@ struct TestAge: View {
                 
                 VStack {
                     VStack(spacing: 0) {
+//                        LottieView(animation: .named("Age"))
+//                            .playing(loopMode: .loop)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: geo.size.height * 0.55, alignment: .center)
+//                            .clipped()
+                        
                         Image("age")
                             .resizable()
                             .scaledToFit()
                             .frame(height: geo.size.height * 0.55)
+                            .modifier(FloatingModifier())
 
                         GeometryReader { bottomGeo in
                             VStack(spacing: 20) {

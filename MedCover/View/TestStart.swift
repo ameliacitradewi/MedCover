@@ -18,10 +18,19 @@ struct TestStart: View {
                     MeshBg().ignoresSafeArea()
                     
                     VStack (spacing: 0) {
+                        
+//                        LottieView(animation: .named("Landing"))
+//                            .playing(loopMode: .loop)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: geo.size.height * 0.55, alignment: .bottom)
+//                            .clipped()
+                        
                         Image("landingpage")
                             .resizable()
                             .scaledToFit()
                             .frame(height: geo.size.height * 0.55)
+                            .modifier(FloatingModifier())
                         
                         VStack (spacing: 20) {
                             Text("Estimate Your Insurance Premium")

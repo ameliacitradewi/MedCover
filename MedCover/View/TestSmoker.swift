@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct TestSmoker: View {
     @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
@@ -17,10 +18,17 @@ struct TestSmoker: View {
                 MeshBg().ignoresSafeArea()
                 
                 VStack (spacing: 0) {
-                    Image("smoke")
+                    LottieView(animation: .named("Smoker"))
+                        .playing(loopMode: .loop)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: geo.size.height * 0.55)
+                        .frame(height: geo.size.height * 0.55, alignment: .bottom)
+                        .clipped()
+                    
+//                    Image("smoke")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(height: geo.size.height * 0.55)
                     
                     GeometryReader { bottomGeo in
                         VStack(spacing: 20) {

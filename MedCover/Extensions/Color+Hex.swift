@@ -27,3 +27,35 @@ extension Color {
         )
     }
 }
+
+
+struct FloatingImageView: View {
+    var body: some View {
+        Image(systemName: "cloud.sun.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 120, height: 120)
+            .foregroundStyle(.orange, .yellow)
+            .scaleEffect(1.0)
+            .offset(y: 0)
+            .modifier(FloatingModifier())
+    }
+}
+
+struct FloatingModifier: ViewModifier {
+    @State private var isAnimating = false
+
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(isAnimating ? 1 : 0.98)
+            .offset(y: isAnimating ? -2 : 2)
+            .animation(
+                .easeInOut(duration: 1.6)
+                    .repeatForever(autoreverses: true),
+                value: isAnimating
+            )
+            .onAppear {
+                isAnimating = true
+            }
+    }
+}

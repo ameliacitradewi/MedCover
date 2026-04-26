@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct TestWeight: View {
     @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
@@ -17,10 +18,17 @@ struct TestWeight: View {
                 MeshBg().ignoresSafeArea()
                 
                 VStack (spacing: 0) {
-                    Image("weight")
+                    LottieView(animation: .named("Weight"))
+                        .playing(loopMode: .loop)
                         .resizable()
                         .scaledToFit()
-                        .frame(height: geo.size.height * 0.55)
+                        .frame(height: geo.size.height * 0.55, alignment: .bottom)
+                        .clipped()
+                    
+//                    Image("weight")
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(height: geo.size.height * 0.55)
                     
                     VStack (spacing: 0) {
                         Text("Your Current Weight?")
