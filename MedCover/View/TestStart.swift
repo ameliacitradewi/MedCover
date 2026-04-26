@@ -41,7 +41,9 @@ struct TestStart: View {
                             Text("Answer a few quick questions to see your estimated insurance premium based on your health profile and lifestyle.\n\nFast, simple, and commitment-free.")
                                 .multilineTextAlignment(.center)
                             
-                            NextButton(title: "Start", destination: TestAge())
+                            NextButton(title: "Start") {
+                                TestAge()
+                            }
                                 .padding(.top)
                         }
                         .padding()

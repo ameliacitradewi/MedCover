@@ -96,7 +96,9 @@ struct TestChildren: View {
                             Text(bottomText)
                                 .font(.caption.italic())
                             
-                            NextButton(title: "Next", destination: TestResult(), disabled: isNextDisabled)
+                            NextButton(title: "Next", disabled: isNextDisabled) {
+                                TestResult()
+                            }
                         }
                         .frame(maxHeight: .infinity)
                     }

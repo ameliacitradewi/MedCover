@@ -101,16 +101,28 @@ struct NormalButton: View {
     }
 }
 
-struct NextButton<Destination: View>: View {
+struct NextButton: View {
     
     let title: String
-    let destination: Destination
+    let destination: () -> AnyView
     var disabled: Bool = false
     var color: Color = .black
     
+    init<Destination: View>(
+        title: String,
+        disabled: Bool = false,
+        color: Color = .black,
+        @ViewBuilder destination: @escaping () -> Destination
+    ) {
+        self.title = title
+        self.disabled = disabled
+        self.color = color
+        self.destination = { AnyView(destination()) }
+    }
+    
     var body: some View {
         NavigationLink {
-            destination
+            destination()
         } label: {
             Text(title.uppercased())
                 .font(.headline.bold())

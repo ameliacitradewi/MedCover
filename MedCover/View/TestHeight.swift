@@ -40,7 +40,9 @@ struct TestHeight: View {
                         selectedGender: $genderStatus
                     )
                     
-                    NextButton(title: "Next", destination: TestWeight())
+                    NextButton(title: "Next") {
+                        TestWeight()
+                    }
                 }
                 .frame(maxHeight: geo.size.height)
             }

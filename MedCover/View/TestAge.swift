@@ -11,7 +11,7 @@ import Lottie
 struct TestAge: View {
     @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @State private var ageInput: String = ""
-    @State private var selectedAge: Double = 1
+    @State private var selectedAge: Double = 17
     
     var body: some View {
         GeometryReader { geo in
@@ -62,7 +62,9 @@ struct TestAge: View {
                                 Text("Don't worry, we're all getting old.")
                                     .font(.caption.italic())
 
-                                NextButton(title: "Next", destination: TestHeight())
+                                NextButton(title: "Next") {
+                                    TestHeight()
+                                }
                                     .disabled(ageInput.isEmpty)
                             }
                             .frame(maxHeight: .infinity)
@@ -78,7 +80,8 @@ struct TestAge: View {
             .frame(maxHeight: geo.size.height)
         }
         .onAppear {
-            let initialAge = min(max(formViewModel.age, 1), 65)
+            let savedAge = formViewModel.age
+            let initialAge = savedAge > 0 ? min(max(savedAge, 1), 65) : 17
             selectedAge = Double(initialAge)
             ageInput = String(initialAge)
             formViewModel.age = initialAge

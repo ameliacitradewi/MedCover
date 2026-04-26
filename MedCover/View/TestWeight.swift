@@ -36,7 +36,9 @@ struct TestWeight: View {
                         
                         WeightPickerView(selectedWeight: $viewModel.selectedWeight)
                         
-                        NextButton(title: "Next", destination: TestSmoker())
+                        NextButton(title: "Next") {
+                            TestSmoker()
+                        }
                             .padding(.bottom)
                     }
                     .padding()

@@ -52,7 +52,9 @@ struct TestSmoker: View {
                             Text("Honesty is healthier than nicotine.")
                                 .font(.caption.italic())
                             
-                            NextButton(title: "Next", destination: TestChildren(), disabled: smokerStatus == nil)
+                            NextButton(title: "Next", disabled: smokerStatus == nil) {
+                                TestChildren()
+                            }
                         }
                         .frame(maxHeight: .infinity)
                     }
