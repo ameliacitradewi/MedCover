@@ -82,24 +82,12 @@ struct TestResult: View {
                                 .foregroundStyle(.red)
                         }
                         
-                        Button {
+                        NormalButton(title: "DONE") {
                             formViewModel.reset()
                             viewModel.clearDataInput()
                             navigateToStart = true
-                        } label: {
-                            Text("DONE")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity, minHeight: 45)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 30)
-                                        .fill(Color.black)
-                                )
                         }
-                        .buttonStyle(.plain)
-                        .padding(.horizontal, 24)
                         .padding(.top)
-
                     }
                     .frame(maxWidth: geo.size.width * 0.8, alignment: .center)
                     .padding(24)

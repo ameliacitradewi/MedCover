@@ -6,6 +6,13 @@
 //
 
 import SwiftUI
+import UIKit
+
+private enum HapticFeedback {
+    static func light() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+    }
+}
 
 struct ToggleOptionButton: View {
     let title: String
@@ -13,7 +20,10 @@ struct ToggleOptionButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            HapticFeedback.light()
+            action()
+        } label: {
             Text(title)
                 .font(.headline.bold())
                 .foregroundColor(.white)
@@ -85,19 +95,29 @@ struct NormalButton: View {
     let action: () -> Void
     
     var body: some View {
-        Button(action: action) {
-            Text(title)
-                .font(.title3.bold())
+        Button {
+            HapticFeedback.light()
+            action()
+        } label: {
+            Text(title.uppercased())
+                .font(.headline.bold())
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
+                .frame(maxWidth: .infinity, minHeight: 45)
                 .background(
-                    RoundedRectangle(cornerRadius: 30, style: .continuous)
-                        .fill(disabled ? Color.gray : Color.blue)
+                    RoundedRectangle(cornerRadius: 30)
+                        .fill(disabled ? Color.gray : Color.black)
                 )
         }
         .disabled(disabled)
         .buttonStyle(.plain)
+        .padding(.horizontal, 24)
+        .simultaneousGesture(
+            TapGesture().onEnded {
+                if !disabled {
+                    HapticFeedback.light()
+                }
+            }
+        )
     }
 }
 
@@ -136,6 +156,13 @@ struct NextButton: View {
         .disabled(disabled)
         .buttonStyle(.plain)
         .padding(.horizontal, 24)
+        .simultaneousGesture(
+            TapGesture().onEnded {
+                if !disabled {
+                    HapticFeedback.light()
+                }
+            }
+        )
     }
 }
 
