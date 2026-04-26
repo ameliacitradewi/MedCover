@@ -5,6 +5,7 @@
 
 import SwiftUI
 import Lottie
+import UIKit
 
 struct HeightView: View {
     @Binding var selectedHeightCm: Int
@@ -16,6 +17,8 @@ struct HeightView: View {
     let maxRulerHeight: CGFloat = 450
     
     @State private var heightCm: CGFloat = 160
+    @State private var lastHapticHeight: Int?
+    private let selectionFeedback = UISelectionFeedbackGenerator()
     private let rulerWidth: CGFloat = 50
     private let dotSize: CGFloat = 12
     private let bubbleW: CGFloat = 68
@@ -179,9 +182,17 @@ struct HeightView: View {
         .onAppear {
             let initial = CGFloat(selectedHeightCm)
             heightCm = min(max(initial, minHeight), maxHeight)
+            lastHapticHeight = Int(heightCm.rounded())
+            selectionFeedback.prepare()
         }
         .onChange(of: heightCm) {_, newValue in
-            selectedHeightCm = Int(newValue.rounded())
+            let roundedHeight = Int(newValue.rounded())
+            if lastHapticHeight != roundedHeight {
+                selectionFeedback.selectionChanged()
+                selectionFeedback.prepare()
+                lastHapticHeight = roundedHeight
+            }
+            selectedHeightCm = roundedHeight
         }
     }
     

@@ -1,8 +1,11 @@
 import SwiftUI
+import UIKit
 
 struct WeightPickerView: View {
     @Binding var selectedWeight: Int
     @StateObject private var viewModel = WeightPickerViewModel()
+    @State private var lastHapticWeight: Int?
+    private let selectionFeedback = UISelectionFeedbackGenerator()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -27,8 +30,15 @@ struct WeightPickerView: View {
         .padding()
         .onAppear {
             viewModel.syncFromSelectedWeight(selectedWeight)
+            lastHapticWeight = viewModel.currentWeight
+            selectionFeedback.prepare()
         }
         .onChange(of: viewModel.currentWeight) { _, newValue in
+            if lastHapticWeight != newValue {
+                selectionFeedback.selectionChanged()
+                selectionFeedback.prepare()
+                lastHapticWeight = newValue
+            }
             selectedWeight = newValue
         }
         .onChange(of: selectedWeight) { _, newValue in

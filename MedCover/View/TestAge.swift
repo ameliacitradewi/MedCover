@@ -7,11 +7,14 @@
 
 import SwiftUI
 import Lottie
+import UIKit
 
 struct TestAge: View {
     @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @State private var ageInput: String = ""
     @State private var selectedAge: Double = 17
+    @State private var lastHapticAge: Int?
+    private let selectionFeedback = UISelectionFeedbackGenerator()
     
     var body: some View {
         GeometryReader { geo in
@@ -49,6 +52,11 @@ struct TestAge: View {
                                         .tint(Color(hex: "880606"))
                                         .onChange(of: selectedAge) { _, newValue in
                                             let roundedAge = Int(newValue)
+                                            if lastHapticAge != roundedAge {
+                                                selectionFeedback.selectionChanged()
+                                                selectionFeedback.prepare()
+                                                lastHapticAge = roundedAge
+                                            }
                                             ageInput = String(roundedAge)
                                             formViewModel.age = roundedAge
                                         }
@@ -83,6 +91,8 @@ struct TestAge: View {
             let savedAge = formViewModel.age
             let initialAge = savedAge > 0 ? min(max(savedAge, 1), 65) : 17
             selectedAge = Double(initialAge)
+            lastHapticAge = initialAge
+            selectionFeedback.prepare()
             ageInput = String(initialAge)
             formViewModel.age = initialAge
         }

@@ -7,11 +7,13 @@
 
 import SwiftUI
 import Lottie
+import UIKit
 
 struct TestChildren: View {
     @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
     @State private var hasChildren: Bool? = nil
     @State var selectedChildrenCount: Int = 0
+    private let selectionFeedback = UISelectionFeedbackGenerator()
     
     private var headerText: String {
         hasChildren == true ? "How Many Children?" : "Do You Have Children?"
@@ -62,6 +64,8 @@ struct TestChildren: View {
                                     LazyVGrid(columns: columns, spacing: 14) {
                                         ForEach(1...10, id: \.self) { index in
                                             Button {
+                                                selectionFeedback.selectionChanged()
+                                                selectionFeedback.prepare()
                                                 selectedChildrenCount = index
                                             } label: {
                                                 Image(systemName: index <= selectedChildrenCount ? "person.circle.fill" : "person.circle")
