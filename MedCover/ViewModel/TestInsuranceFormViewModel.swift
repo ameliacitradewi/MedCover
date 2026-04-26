@@ -9,4 +9,13 @@ final class TestInsuranceFormViewModel: ObservableObject {
     @Published var weightKg: Int = 60
     @Published var smokerStatus: SmokerStatus? = nil
     @Published var children: Int = 0
+
+    func reset() {
+        age = 0
+        gender = .female
+        heightCm = 160
+        weightKg = 60
+        smokerStatus = nil
+        children = 0
+    }
 }
