@@ -8,15 +8,14 @@ import Lottie
 
 struct HeightView: View {
     @Binding var selectedHeightCm: Int
+    @Binding var selectedGender: Gender
     
     // MARK: Config
     let minHeight: CGFloat = 50
     let maxHeight: CGFloat = 200
-    let rulerHeight: CGFloat = 450
+    let maxRulerHeight: CGFloat = 450
     
     @State private var heightCm: CGFloat = 160
-    @State private var selectedGender: Gender = .female
-    
     private let rulerWidth: CGFloat = 50
     private let dotSize: CGFloat = 12
     private let bubbleW: CGFloat = 68
@@ -27,36 +26,18 @@ struct HeightView: View {
     // MARK: Lottie Scale (50cm -> 0.25 | 250cm -> 1.35)
     private var personScale: CGFloat {
         let progress = (heightCm - minHeight) / (maxHeight - minHeight)
-        return 0.25 + progress * (1.2 - 0.25)
+        return 0.25 + progress * (1.0 - 0.25)
     }
     
     var body: some View {
-        
-        let lineY = min(
-            max(yPosition(for: heightCm), bubbleH / 2),
-            rulerHeight - bubbleH / 2
-        )
-        
-        
-        VStack(spacing: 30) {
-            HStack(spacing: 14) {
-                ToggleOptionButton(
-                    title: Gender.female.title,
-                    isSelected: selectedGender == .female
-                ) {
-                    selectedGender = .female
-                }
-
-                ToggleOptionButton(
-                    title: Gender.male.title,
-                    isSelected: selectedGender == .male
-                ) {
-                    selectedGender = .male
-                }
-            }
-                .padding(.bottom, 10)
+        GeometryReader { geo in
+            let rulerHeight = min(maxRulerHeight, geo.size.height)
+            let lineY = min(
+                max(yPosition(for: heightCm, rulerHeight: rulerHeight), bubbleH / 2),
+                rulerHeight - bubbleH / 2
+            )
             
-            ZStack(alignment: .bottomTrailing) {
+            ZStack(alignment: .center) {
                 
                 // =====================================================
                 // LOTTIE CHARACTER
@@ -116,7 +97,7 @@ struct HeightView: View {
                                 )
                         }
                     }
-                    .frame(height: rulerHeight)
+                    .frame(maxHeight: rulerHeight)
                     .contentShape(Rectangle())
                     .gesture(
                         DragGesture(minimumDistance: 0)
@@ -127,7 +108,7 @@ struct HeightView: View {
                                     rulerHeight
                                 )
                                 
-                                heightCm = heightValue(for: clamped)
+                                heightCm = heightValue(for: clamped, rulerHeight: rulerHeight)
                             }
                     )
                     
@@ -191,6 +172,7 @@ struct HeightView: View {
                 }
             }
             .frame(height: rulerHeight)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .animation(
                 .interactiveSpring(
                     response: 0.3,
@@ -198,7 +180,6 @@ struct HeightView: View {
                 ),
                 value: heightCm
             )
-            
         }
         .onAppear {
             let initial = CGFloat(selectedHeightCm)
@@ -211,12 +192,12 @@ struct HeightView: View {
     
     // MARK: Helpers
     
-    private func yPosition(for cm: CGFloat) -> CGFloat {
+    private func yPosition(for cm: CGFloat, rulerHeight: CGFloat) -> CGFloat {
         let ratio = (maxHeight - cm) / (maxHeight - minHeight)
         return ratio * rulerHeight
     }
     
-    private func heightValue(for y: CGFloat) -> CGFloat {
+    private func heightValue(for y: CGFloat, rulerHeight: CGFloat) -> CGFloat {
         let ratio = y / rulerHeight
         let value = maxHeight - ratio * (maxHeight - minHeight)
         return min(max(value, minHeight), maxHeight)
@@ -229,9 +210,13 @@ struct HeightView: View {
 
 private struct HeightPreview: View {
     @State private var selectedHeightCm: Int = 160
+    @State private var selectedGender: Gender = .female
 
     var body: some View {
-        HeightView(selectedHeightCm: $selectedHeightCm)
+        HeightView(
+            selectedHeightCm: $selectedHeightCm,
+            selectedGender: $selectedGender
+        )
             .padding()
     }
 }

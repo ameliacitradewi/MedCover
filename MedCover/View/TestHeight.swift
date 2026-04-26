@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct TestHeight: View {
-    @State private var heightInput = 160
-    @State private var genderStatus: Gender? = nil
+    @State private var selectedHeightCm: Int = 160
+    @State private var genderStatus: Gender = .female
     
     var body: some View {
         GeometryReader { geo in
@@ -17,11 +17,10 @@ struct TestHeight: View {
                 MeshBg().ignoresSafeArea()
                 
                 VStack { // wrapper untuk semua
-                    
-                    VStack { // for toggle button
+                    VStack {
                         Text("Gender and Height")
                             .font(.title.bold())
-                    
+                        
                         HStack {
                             ForEach(Gender.allCases) { status in
                                 ToggleOptionButton(
@@ -32,28 +31,25 @@ struct TestHeight: View {
                                 }
                             }
                         }
+                        .frame(height: 60)
                     }
-                    .frame(height: geo.size.height * 0.2)
                     
-                    VStack { // for toggle button
-                        Text("Height")
-                    }
-                    .frame(height: geo.size.height * 0.6)
+                    HeightView(
+                        selectedHeightCm: $selectedHeightCm,
+                        selectedGender: $genderStatus
+                    )
                     
-                    VStack { // for toggle button
-                        NextButton(title: "Next", destination: TestWeight())
-                    }
-                    .frame(height: geo.size.height * 0.2)
-                    
+                    NextButton(title: "Next", destination: TestWeight())
                 }
-                
+                .frame(maxHeight: geo.size.height)
             }
             .frame(maxHeight: geo.size.height)
         }
     }
 }
 
-
-#Preview {
-    TestHeight()
+#Preview("Default") {
+    NavigationStack {
+        TestHeight()
+    }
 }

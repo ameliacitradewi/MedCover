@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TestWeight: View {
-    @State private var selectedWeight: Int = 60
+    @StateObject private var viewModel = TestWeightViewModel()
     
     var body: some View {
         GeometryReader { geo in
@@ -24,9 +24,8 @@ struct TestWeight: View {
                     VStack (spacing: 0) {
                         Text("Your Current Weight?")
                             .font(.title.bold())
-                            .padding(.top)
                         
-                        WeightPickerView(selectedWeight: $selectedWeight)
+                        WeightPickerView(selectedWeight: $viewModel.selectedWeight)
                         
                         NextButton(title: "Next", destination: TestSmoker())
                     }

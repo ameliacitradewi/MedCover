@@ -14,7 +14,7 @@ struct TestResult: View {
                 MeshBg().ignoresSafeArea()
                 
                 VStack (spacing: 0) {
-                    
+                    Text("result")
                 }
                 .background(
                     RoundedRectangle(cornerRadius: 50, style: .continuous)
