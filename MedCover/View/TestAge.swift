@@ -20,18 +20,18 @@ struct TestAge: View {
                 
                 VStack {
                     VStack(spacing: 0) {
-//                        LottieView(animation: .named("Age"))
-//                            .playing(loopMode: .loop)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(height: geo.size.height * 0.55, alignment: .center)
-//                            .clipped()
-                        
-                        Image("age")
+                        LottieView(animation: .named("Age"))
+                            .playing(loopMode: .loop)
                             .resizable()
                             .scaledToFit()
-                            .frame(height: geo.size.height * 0.55)
-                            .modifier(FloatingModifier())
+                            .frame(height: geo.size.height * 0.55, alignment: .bottom)
+                            .clipped()
+                        
+//                        Image("age")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: geo.size.height * 0.55)
+//                            .modifier(FloatingModifier())
 
                         GeometryReader { bottomGeo in
                             VStack(spacing: 20) {

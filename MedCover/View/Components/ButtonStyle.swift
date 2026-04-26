@@ -19,7 +19,7 @@ struct ToggleOptionButton: View {
                 .foregroundColor(.white)
                 .frame(
                     width: isSelected ? 150 : 120,
-                    height: isSelected ? 55 : 35
+                    height: isSelected ? 35 : 20
                 )
                 .background(
                     RoundedRectangle(cornerRadius: 46, style: .continuous)
