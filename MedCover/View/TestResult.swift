@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct TestResult: View {
     @EnvironmentObject private var formViewModel: TestInsuranceFormViewModel
@@ -29,24 +30,45 @@ struct TestResult: View {
                 MeshBg().ignoresSafeArea()
                 
                 VStack (spacing: 0) {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Result Input")
-                            .font(.title.bold())
+                    LottieView(animation: .named("Premium"))
+                        .playing(loopMode: .loop)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: geo.size.height * 0.3, alignment: .bottom)
+                        .clipped()
+                        .padding(.top)
+                    
+                    VStack(alignment: .center, spacing: 10) {
+                        Text("Summary of Your Data")
+                            .font(.title3.bold())
+                            .padding(.bottom)
 
                         if let data = viewModel.dataInput {
-                            Text("Age: \(data.age)")
-                            Text("Gender: \(data.gender.title)")
-                            Text("Height: \(data.heightCm) cm")
-                            Text("Weight: \(data.weightKg) kg")
-                            Text(String(format: "BMI: %.2f", data.bmi))
-                            Text("Smoker: \(data.smokerStatus.title)")
-                            Text("Children: \(data.children)")
+                            LazyVGrid(
+                                columns: [
+                                    GridItem(.flexible(), spacing: 16),
+                                    GridItem(.flexible(), spacing: 16)
+                                ],
+                                spacing: 0
+                            ) {
+                                Text("Age: \(data.age)")
+                                Text("Gender: \(data.gender.title)")
+                                
+                                Text("Height: \(data.heightCm) cm")
+                                Text("Weight: \(data.weightKg) kg")
+                                
+                                Text(String(format: "BMI: %.2f", data.bmi))
+                                Text("Smoker: \(data.smokerStatus.title)")
+                                
+                                Text("Children: \(data.children)")
+                            }
                             
                             Divider()
                                 .padding(.vertical, 4)
 
                             Text("Estimated Annual Premium")
-                                .font(.headline)
+                                .font(.title3.bold())
+                            
                             Text(premiumText)
                                 .font(.title2.bold())
                         } else {
@@ -76,9 +98,10 @@ struct TestResult: View {
                         }
                         .buttonStyle(.plain)
                         .padding(.horizontal, 24)
+                        .padding(.top)
 
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                    .frame(maxWidth: geo.size.width * 0.8, alignment: .center)
                     .padding(24)
                 }
                 .background(
@@ -89,12 +112,9 @@ struct TestResult: View {
             }
             .frame(maxHeight: geo.size.height)
         }
-        .onAppear {
-            viewModel.prepareAndPredict(from: formViewModel)
-        }
-        .navigationDestination(isPresented: $navigateToStart) {
-            TestStart()
-        }
+        .onAppear { viewModel.prepareAndPredict(from: formViewModel)}
+        .navigationDestination(isPresented: $navigateToStart) { TestStart() }
+        .navigationBarBackButtonHidden(true)
     }
 }
 
