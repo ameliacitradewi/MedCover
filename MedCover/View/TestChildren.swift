@@ -66,7 +66,7 @@ struct TestChildren: View {
                                             } label: {
                                                 Image(systemName: index <= selectedChildrenCount ? "person.circle.fill" : "person.circle")
                                                     .font(.system(size: 38, weight: .semibold))
-                                                    .foregroundStyle(index <= selectedChildrenCount ? .blue : .gray)
+                                                    .foregroundStyle(index <= selectedChildrenCount ? Color(hex: "880606") : .gray)
                                             }
                                             .buttonStyle(.plain)
                                         }

@@ -46,7 +46,7 @@ struct TestAge: View {
                                         .lineLimit(1)
 
                                     Slider(value: $selectedAge, in: 1...65, step: 1)
-                                        .tint(.blue)
+                                        .tint(Color(hex: "880606"))
                                         .onChange(of: selectedAge) { _, newValue in
                                             let roundedAge = Int(newValue)
                                             ageInput = String(roundedAge)

@@ -42,7 +42,7 @@ struct HeightView: View {
                 // =====================================================
                 // LOTTIE CHARACTER
                 // =====================================================
-                LottieView(animation: .named(selectedGender == .female ? "female-passed.json" : "male-passed.json"))
+                LottieView(animation: .named(selectedGender == .female ? "Female.json" : "Male.json"))
                     .playing(loopMode: .loop)
                     .resizable()
                     .scaledToFit()
@@ -84,11 +84,10 @@ struct HeightView: View {
                                 .background(
                                     RoundedRectangle(cornerRadius: 14)
                                         .fill(
-                                            Color(
-                                                red: 0.33,
-                                                green: 0.58,
-                                                blue: 0.97
-                                            )
+                                            LinearGradient(
+                                                colors: [Color(hex: "C21014"), Color(hex: "880606")],
+                                                startPoint: .top,
+                                                endPoint: .bottom)
                                         )
                                 )
                                 .position(
@@ -150,11 +149,7 @@ struct HeightView: View {
                         
                         Circle()
                             .fill(
-                                Color(
-                                    red: 0.33,
-                                    green: 0.58,
-                                    blue: 0.97
-                                )
+                                Color(hex: "880606")
                             )
                             .frame(
                                 width: dotSize,

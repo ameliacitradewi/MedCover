@@ -26,7 +26,7 @@ struct ToggleOptionButton: View {
                         .fill(
                             isSelected
                             ? LinearGradient(
-                                colors: [Color(hex: "BBDCF8"), Color(hex: "4C7AF4")],
+                                colors: [Color(hex: "C21014"), Color(hex: "880606")],
                                 startPoint: .top,
                                 endPoint: .bottom
                             )
@@ -127,22 +127,22 @@ struct NextButton<Destination: View>: View {
     }
 }
 
+//#Preview {
+//    NextButton(title: "Test", destination: TestAge())
+//}
+
 #Preview {
-    NextButton(title: "Test", destination: TestAge())
+    ZStack {
+        Color(hex: "F2F5FF").ignoresSafeArea()
+        GenderTogglePreview()
+    }
 }
 
-//#Preview {
-//    ZStack {
-//        Color(hex: "F2F5FF").ignoresSafeArea()
-//        GenderTogglePreview()
-//    }
-//}
-//
-//private struct GenderTogglePreview: View {
-//    @State private var selectedGender: Gender = .male
-//
-//    var body: some View {
-//        GenderToggleButton(selectedGender: $selectedGender)
-//            .padding(.horizontal, 20)
-//    }
-//}
+private struct GenderTogglePreview: View {
+    @State private var selectedGender: Gender = .male
+
+    var body: some View {
+        GenderToggleButton(selectedGender: $selectedGender)
+            .padding(.horizontal, 20)
+    }
+}
