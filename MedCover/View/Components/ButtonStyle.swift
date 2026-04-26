@@ -15,7 +15,7 @@ struct ToggleOptionButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.title3.bold())
+                .font(.headline.bold())
                 .foregroundColor(.white)
                 .frame(
                     width: isSelected ? 150 : 120,
@@ -112,10 +112,10 @@ struct NextButton<Destination: View>: View {
         NavigationLink {
             destination
         } label: {
-            Text(title)
-                .font(.headline)
+            Text(title.uppercased())
+                .font(.headline.bold())
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity, minHeight: 56)
+                .frame(maxWidth: .infinity, minHeight: 45)
                 .background(
                     RoundedRectangle(cornerRadius: 30)
                         .fill(disabled ? Color.gray : color)
@@ -127,9 +127,9 @@ struct NextButton<Destination: View>: View {
     }
 }
 
-//#Preview {
-//    NextButton(title: "Test", destination: TestAge())
-//}
+#Preview {
+    NextButton(title: "Test", destination: TestAge())
+}
 
 //#Preview {
 //    ZStack {

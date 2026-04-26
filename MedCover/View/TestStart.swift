@@ -29,7 +29,7 @@ struct TestStart: View {
                         Image("landingpage")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: geo.size.height * 0.55)
+                            .frame(height: geo.size.height * 0.55, alignment: .bottom)
                             .modifier(FloatingModifier())
                         
                         VStack (spacing: 20) {

@@ -37,6 +37,7 @@ struct TestWeight: View {
                         WeightPickerView(selectedWeight: $viewModel.selectedWeight)
                         
                         NextButton(title: "Next", destination: TestSmoker())
+                            .padding(.bottom)
                     }
                     .padding()
                     .frame(maxHeight: geo.size.height)
